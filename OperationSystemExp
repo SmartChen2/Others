@@ -1,0 +1,159 @@
+package com.company;
+import java.io.BufferedInputStream;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args){
+        Scanner sc  = new Scanner(new BufferedInputStream(System.in));
+        boolean flag = false;
+        int i, finishnum, pagenum, intercruptnum, count;
+
+        int n = sc.nextInt();
+        int pagesize = sc.nextInt();
+        int[] arr = new int[n];
+        int[] page = new int[pagesize];
+
+        for (i = 0; i < n; i++)
+            arr[i] = sc.nextInt();
+        for (i = 0; i < pagesize; i++)
+            page[i] = 0;
+
+        finishnum = 0;
+        pagenum = 0;
+        intercruptnum = 0;
+        //OPT算法
+        System.out.println("OPT算法");
+        while (finishnum < n) {
+            if (pagenum < pagesize) {
+                page[pagenum] = arr[finishnum];
+                finishnum++;
+                pagenum++;
+                for (i = 0; i < pagenum; i++)
+                    System.out.print(page[i] + " ");
+                System.out.println();
+                continue;
+            }
+            for (i = 0; i < pagesize; i++)
+                if (page[i] == arr[finishnum])
+                    flag = true;//如果内存中已经有了这个页面 则不需页面替换
+            if (!flag){//要执行opt算法算出需要置换的页面 然后置换
+                optimal(page, arr, finishnum);
+                intercruptnum++;
+            }
+            display(page);
+            flag = false;
+            finishnum++;
+        }
+        System.out.println("页面中断次数 " + intercruptnum);
+
+
+
+        //FIFO算法
+        System.out.println("\r\nFIFO算法");
+        finishnum = 0;
+        count = 0;
+        pagenum = 0;
+        intercruptnum = 0;
+        while (finishnum < n) {
+            if (pagenum < pagesize) {
+                page[pagenum] = arr[finishnum];
+                finishnum++;
+                pagenum++;
+                for (i = 0; i < pagenum; i++)
+                    System.out.print(page[i] + " ");
+                System.out.println();
+                continue;
+            }
+            for (i = 0; i < pagesize; i++)
+                if (page[i] == arr[finishnum])
+                    flag = true;//如果内存中已经有了这个页面 则不需页面替换
+            if (!flag){//用FIFO算法算出需要置换的页面 然后置换
+                page[count] = arr[finishnum];
+                count++;
+                if (count == pagesize)
+                    count = 0;
+                intercruptnum++;
+            }
+            display(page);
+            flag = false;
+            finishnum++;
+        }
+        System.out.println("页面中断次数 " + intercruptnum);
+
+
+        //LRU算法
+        int[] pageFrequency = new int[pagesize];
+        System.out.println("\r\nLRU算法");
+        finishnum = 0;
+        count = 0;
+        pagenum = 0;
+        intercruptnum = 0;
+        while (finishnum < n) {
+            if (pagenum < pagesize) {
+                page[pagenum] = arr[finishnum];
+                finishnum++;
+                pagenum++;
+                for (i = 0; i < pagenum; i++)
+                    System.out.print(page[i] + " ");
+                System.out.println();
+                continue;
+            }
+            for (i = 0; i < pagesize; i++)
+                if (page[i] == arr[finishnum]) {
+                    flag = true;//如果内存中已经有了这个页面 则不需页面替换
+                    pageFrequency[i] = 0;//刚用了这个页面  更新最近使用的标记 0表示刚刚使用过
+                }
+                else {
+                    pageFrequency[i]++;//更新最近使用的标记 如果这次没用这个页面 用LRU置换的时候只要找出pageFrequency数组中最大的值把它置换
+                }
+
+            if (!flag){//用LRU算法算出需要置换的页面 然后置换
+                intercruptnum++;
+                LRU(pageFrequency, arr[finishnum], page);
+            }
+            display(page);
+            flag = false;
+            finishnum++;
+        }
+        System.out.println("页面中断次数 " + intercruptnum);
+    }
+
+    public static void LRU(int[] pageFrequency, int switchnum, int[] page) {
+        int i, max, maxcount;
+        max = -1;
+        maxcount = 0;
+
+        for (i = 0; i < page.length; i++)
+            if (max < pageFrequency[i]) {
+                 max = pageFrequency[i];
+                 maxcount = i;
+            }
+
+        pageFrequency[maxcount] = 0;
+        page[maxcount] = switchnum;
+    }
+
+    public static void optimal(int[] page, int[] arr, int num) {
+        int i, j, max, maxcount;
+        max = 0;
+        maxcount = 0;
+        for (i = 0; i < page.length; i++) {
+            for (j = num; j < arr.length; j++)
+                if (page[i] == arr[j] || j == arr.length - 1) {
+                    if (j - num > max) {
+                        max = j - num;
+                        maxcount = i;//找出来了 就是要置换这个元素
+                    }
+                    break;
+                }
+        }
+        page[maxcount] = arr[num];
+    }
+
+    public static void display(int[] arr) {
+        int i;
+        for (i = 0; i < arr.length; i++)
+            System.out.print(arr[i] + " ");
+        System.out.println();
+    }
+}
