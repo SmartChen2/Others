@@ -1,0 +1,37 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+F2::-
+F3::*
+F4::/
+
+F5::6
+F6::7
+F7::8
+F8::9
+
+F9::`
+F10::F2
+F11::F3
+F12::F4
+
+`::Tab
+6::0
+7::(
+8::)
+9::;
+0::Left
+-::Right
+
+Tab::Enter
+q::BS
+t::q
+o::k
+j::n
+k::o
+`;::t
+
+n::j
+PrintScreen::F7
