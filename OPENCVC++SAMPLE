@@ -1,0 +1,70 @@
+Mat image;//图像
+VideoCapture capture;//开启摄像头
+void drawText(Mat & image)
+{
+    putText(image, "Hello OpenCV",
+            Point(200, 500),
+            FONT_HERSHEY_COMPLEX, 1, // font face and scale
+            Scalar(255, 255, 255), // white
+            1, LINE_AA); // line thickness and type
+}//输出图像窗口黑色区域的文字
+imshow("Sample", image);//输出图像窗口
+
+
+基本画图
+C:\opencv\sources\samples\cpp\tutorial_code\ImgProc\basic_drawing
+
+面部捕捉和眼睛捕捉
+objectDetection
+
+对一幅不同角度拍摄的画进行黑白化之后进行匹配 但是百度说这个算法速度慢 会返回相似度的参数
+feature2D AKAZE_match
+imwrite("akaze_result.png", res);保存图片
+
+
+
+检测Corner 即检测角
+cornerDetector_Demo TrackingMotion
+
+把lena图mask 变清晰
+mat_mask_operations
+
+
+
+discrete_fourier_transform
+"This program demonstrated the use of the discrete Fourier transform (DFT). " << endl
+        <<  "The dft of an image is taken and it's power spectrum is displayed."  
+
+
+
+花式描边 ShapeDescriptors 
+generalContours_demo1 和2 给他们加上了外边框
+
+灰白化
+{
+	
+	Mat src_gray;
+	int thresh = 100;
+	RNG rng(12345);
+	cvtColor( src, src_gray, COLOR_BGR2GRAY );
+    blur( src_gray, src_gray, Size(3,3) );//blur is @brief Convolves an image with the kernel.
+}
+
+BasicLinearTransformsTrackbar 调亮度和对比度
+
+histogram 柱状图
+
+AddingImages 两张图的线性叠加
+
+introduction_to_pca 在物体的中心点建立坐标系？
+
+
+示例代码的作用是只把白色部分（成分？）变成灰色
+decolor
+{
+	Mat gray = Mat( src.size(), CV_8UC1 );
+    Mat color_boost = Mat( src.size(), CV_8UC1 );
+
+    decolor( src, gray, color_boost );
+
+}
